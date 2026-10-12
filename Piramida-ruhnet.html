@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>"Пирамида рухнет!"</title>
+  <style>:root {
+  --bg: #FDFBF7; --surface: #FFFFFF; --text: #2D2B2A; --text-muted: #7A7571;
+  --accent: #D97736; --accent-hover: #BF6226; --border: #EAE6DF;
+  --shadow: rgba(45, 43, 42, 0.05); --nav-bg: rgba(253, 251, 247, 0.95);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1918; --surface: #242220; --text: #EBE9E4; --text-muted: #A39E99;
+    --accent: #E08C53; --accent-hover: #F0A06C; --border: #383533;
+    --shadow: rgba(0, 0, 0, 0.3); --nav-bg: rgba(26, 25, 24, 0.95);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+/* === Шапка с фиксацией === */
+.top-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.nav-logo a {
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Кнопка "На главную" по центру при скролле */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  margin: 0 12px;
+}
+.nav-home-btn {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.nav-home-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.nav-home-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+.nav-links a {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* === Кнопка Регистрации с блеском и сменой текста === */
+.btn-register {
+  position: relative;
+  background: var(--accent);
+  color: #fff !important;
+  height: 40px;
+  min-width: 145px;
+  padding: 0 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(217, 119, 54, 0.25);
+  border: none !important;
+  flex-shrink: 0;
+}
+.btn-register:hover {
+  background: var(--accent-hover);
+}
+
+.btn-register::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  animation: btnShimmer 7s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes btnShimmer {
+  0%, 72% { left: -120%; }
+  82%, 100% { left: 180%; }
+}
+
+.btn-txt-reg, .btn-txt-promo {
+  position: absolute;
+  white-space: nowrap;
+}
+.btn-txt-reg {
+  animation: animReg 7s infinite ease-in-out;
+}
+.btn-txt-promo {
+  animation: animPromo 7s infinite ease-in-out;
+}
+@keyframes animReg {
+  0%, 46% { opacity: 1; transform: translateY(0); }
+  52%, 94% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes animPromo {
+  0%, 46% { opacity: 0; transform: translateY(8px); }
+  52%, 94% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(8px); }
+}
+
+/* === Структура страницы === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  width: 100%;
+}
+.content {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  padding: 50px 60px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px var(--shadow);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+}
+article {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 110px; max-height: calc(100vh - 140px); overflow-y: auto; }
+.toc h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 15px; }
+.toc ul { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--border); }
+.toc a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; padding: 6px 0 6px 14px; }
+.toc a:hover { color: var(--text); border-left: 2px solid var(--accent); margin-left: -2px; }
+h1, h2, h3 { color: var(--text); font-weight: 700; word-break: normal; }
+h1 { font-size: 2.4rem; margin-bottom: 0.8em; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; margin: 1.8em 0 0.8em; }
+h3 { font-size: 1.25rem; margin: 1.5em 0 0.6em; }
+p { margin: 0 0 1.4em; overflow-wrap: break-word; }
+a { color: var(--accent); text-decoration: none; word-break: break-word; }
+figure { margin: 2em 0; text-align: center; max-width: 100%; }
+figure img { max-width: 100%; height: auto; border-radius: 12px; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 2em 0; background: #000; border-radius: 16px; overflow: hidden; max-width: 100%; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+.loader, .preloader { display: none !important; }
+
+/* === Плашки внимания === */
+.callout {
+  margin: 1.8em 0;
+  padding: 1.4em 1.8em;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+.callout > *:first-child { margin-top: 0 !important; }
+.callout > *:last-child { margin-bottom: 0 !important; }
+.callout h1, .callout h2, .callout h3, .callout h4 {
+  margin-top: 0;
+  margin-bottom: 0.4em;
+  line-height: 1.3;
+}
+.callout p { margin: 0; line-height: 1.5; }
+.callout p + p { margin-top: 0.8em; }
+.callout a { border-bottom: none; }
+.callout a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+.callout-blue   { background: rgba(74, 111, 165, 0.08); border-color: rgba(74, 111, 165, 0.25); }
+.callout-amber  { background: rgba(217, 119, 54, 0.08); border-color: rgba(217, 119, 54, 0.25); }
+.callout-purple { background: rgba(155, 107, 138, 0.08); border-color: rgba(155, 107, 138, 0.25); }
+.callout-green  { background: rgba(74, 138, 111, 0.08); border-color: rgba(74, 138, 111, 0.25); }
+
+/* === Мобильная адаптация === */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column-reverse;
+    padding: 15px 12px;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch; /* Предотвращает горизонтальный вылет контента */
+  }
+  .sidebar { width: 100%; max-width: 100%; position: static; }
+  .content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px 14px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  h1 { font-size: clamp(1.45rem, 6.2vw, 1.85rem); line-height: 1.2; }
+
+  .callout {
+    padding: 1.2em 1.2em;
+    margin: 1.4em 0;
+  }
+
+  .nav-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 14px 6px;
+    gap: 8px 0;
+  }
+  .nav-logo { order: 1; }
+  .nav-center { order: 2; margin: 0 4px; }
+  .btn-register {
+    order: 3;
+    height: 36px;
+    min-width: 130px;
+    font-size: 0.82rem;
+    padding: 0 10px;
+  }
+  .nav-home-btn { padding: 4px 10px; font-size: 0.78rem; gap: 4px; }
+  .nav-links {
+    order: 4;
+    width: 100%;
+    margin: 6px 0 0;
+    overflow-x: auto;
+    padding: 0 4px 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 16px;
+    display: flex;
+    justify-content: flex-start;
+    justify-content: safe center; /* Центрирует если помещается, иначе выравнивает по левому краю без обрезки */
+  }
+  .nav-links a {
+    flex-shrink: 0;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+}</style>
+</head>
+<body>
+  
+    <header class="top-nav">
+      <div class="nav-container">
+        <div class="nav-logo"><a href="index.html">МММ 2.0</a></div>
+        <div class="nav-center">
+          <a href="index.html" class="nav-home-btn" id="nav-home-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>На главную</span>
+          </a>
+        </div>
+        <nav class="nav-links"><a href="PREDUPREZHDENIE.html">Предупреждение</a><a href="PRAVILA.html">Правила</a><a href="idea.html">Идеология</a><a href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html">Публицистика</a></nav>
+        <a href="https://t.me/MavroRebot?start=gitstatic" class="btn-register" target="_blank">
+          <span class="btn-txt-reg">Регистрация</span>
+          <span class="btn-txt-promo">Удвоение 1000₽</span>
+        </a>
+      </div>
+    </header>
+  <div class="container">
+    
+    <main class="content">
+      <article>
+        <h1>"Пирамида рухнет!"</h1>
+        <article class="article__content text" itemprop="articleBody"><!--[--><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="Z2eA"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="8w5s"></a><!--[--><!--]--><!--[--><a class="" href="Main.html"><!--[--><strong>НА ГЛАВНУЮ</strong><!--]--></a><!--]--></p><!--]--></div><div class="callout callout-purple"><!-- --><!--[--><!--]--><!--[--><p><a name="7VUc"></a><!--[--><!--]--><!--[-->Вернуться в <a class="" href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html"><!--[--><strong>раздел "Публицистика Сергея Мавроди"</strong><!--]--></a><!--]--></p><!--]--></div><figure class="m_column" itemscope="" itemtype="http://schema.org/ImageObject"><a name="wcb3"></a><!--[--><!--]--><!-- --><!--[--><img src="41227952-4a3e-4ba0-809a-3ebfaf43ec51.jpeg"/><!--]--><!--[--><!--[--><figcaption itemprop="description"><!-- --><!--[--><!--]--><!--[-->Живая структурированная сеть, основанная на доверии и взаимопомощи; абсолютно децентрализованная автоматизированная система, в которой телеграм-бот стыкует участников напрямую друг с другом; отсутствие единых баз данных, серверов и центров управления. Тотальная распылённость!<!--]--></figcaption><!--]--><!--]--></figure><hr/><h4><a name='Отрывок-из-книги-"История-первой-пирамиды"-Сергея-Мавроди:'></a><!--[--><!--]--><!--[-->Отрывок из книги <a href="https://www.dropbox.com/sh/r04z1ksrl1rhxsj/AADdEF7T5ON7vCv6OBWZwNTfa?dl=0"><!--[-->"История первой пирамиды"<!--]--></a> Сергея Мавроди:<!--]--></h4><p><a name="1iRj"></a><!--[--><!--]--><!--[--><em>Что же касается «пирамиды», то у меня вообще с тех пор на это слово устойчивая идиосинкразия. Не могу я, короче, его спокойно слышать! Раздражает оно меня. Как, наверное, раздражало Цезаря и Наполеона (так что я, по крайней мере, в хорошей компании!). Они ведь тоже в свое время среди этих проклятых пирамид чуть не сгинули. Правда, Цезарь-то хоть за Клеопатру страдал, а я?.. Да и выкрутились они все же, в конце концов, а вот что касается меня... Н-да... Ладно, продолжим.</em><!--]--></p><hr/><figure class="m_column" itemscope="" itemtype="http://schema.org/ImageObject"><a name="oByn"></a><!--[--><!--]--><!-- --><!--[--><img src="https://telegra.ph/file/3b27b7db7db5757f40a82.jpg"/><!--]--><!--[--><!--[--><!-- --><!--]--><!--]--></figure><hr/><p><a name="h2CO"></a><!--[--><!--]--><!--[--><em>Итак, что же такое «пирамида», точнее «финансовая пирамида». Согласно классическому определению, это когда деньги предыдущим платят за счет последующих. Это определение СМИ настолько растиражировали, что знакомо оно сегодня, наверное, даже школьнику. Причем, благодаря усилиям все тех же СМИ, ассоциируется слово «пирамида» с чем-то, во-первых, сугубо негативным, и, во-вторых, крайне недолговечным. С чем-то таким, что постоянно «рушится». Насчет негативности мы поговорим чуть позже, а вот что касается недолговечности, то я сейчас сделаю одно важное замечание, которое, наверное, многих и многих весьма удивит.</em><!--]--></p><p><a name="hjmT"></a><!--[--><!--]--><!--[--><em>Так вот, пирамиды никто и никогда всерьез не изучал. Никто не знает, долговечные они или нет? Может, долговечны, а может, и не очень. Ничего решительно на этот счет не известно. Совершеннейшая terra incognita.</em><!--]--></p><p><a name="VOa7"></a><!--[--><!--]--><!--[--><em>Нельзя же, в самом деле, принимать всерьез трогательные по своей наивности школьные рассуждения про геометрические прогрессии, «перевернутые пирамиды» и прочие математические страсти. Рассчитанные, по всей видимости, на людей, знакомых с математикой только на уровне таблицы умножения и четырех начальных правил арифметики.</em><!--]--></p><p><a name="336R"></a><!--[--><!--]--><!--[--><em>Сложные формулы... «население земного шара»... - это, конечно, на простодушных дилетантов действует неотразимо, но вот ответьте, пожалуйста, на один простой вопрос.</em><!--]--></p><p><a name="KYbn"></a><!--[--><!--]--><!--[--><strong><em>А на какой базовой посылке эти «блестящие» логические построения основаны? Разве не на предположении, что каждый участник такой «пирамиды» вкладывает деньги только один раз (причем все участники - одну и ту же, конкретную сумму), держит их только очень короткое и строго определенное время, а потом все забирает и больше никогда к этой пирамиде и на пушечный выстрел не приближается?!</em></strong><!--]--></p><p><a name="iLZA"></a><!--[--><!--]--><!--[--><em>Т.е. на предположении, что все участники действуют абсолютно единообразно и по какому-то совершенно конкретному, раз и навсегда заданному, жесткому сценарию. Да, такая пирамида рухнет.</em><!--]--></p><p><a name="QBQi"></a><!--[--><!--]--><!--[--><strong><em>Но что это доказывает? Это доказывает лишь, что существует модель поведения участников, гибельная для системы.</em></strong><!--]--></p><p><a name="st61"></a><!--[--><!--]--><!--[--><em>Да такая модель существует в любой системе! Если все пассажиры баркаса вдруг перейдут на правый борт, баркас опрокинется. (Вспомните знаменитый эпизод из «Двенадцати стульев». Клуб «Четырех коней».) Если все молекулы воздуха в комнате вдруг неожиданно дружно устремятся вправо (а теоретически это возможно!), вы погибнете в левом углу.</em><!--]--></p><p><a name="LVcw"></a><!--[--><!--]--><!--[--><em>Ну и что? Что это доказывает? Только то, что при движении на воде надо соблюдать технику безопасности. Что же касается молекул, то на все воля Божья.</em><!--]--></p><p><a name="snJw"></a><!--[--><!--]--><!--[--><em>Так же просто доказать, что пирамида вечна. Достаточно предположить, что первый раз все ее участники начнут забирать деньги только через сто лет. Или через тысячу. И ни на день раньше!</em><!--]--></p><p><a name="f6Md"></a><!--[--><!--]--><!--[--><em>Если говорить всерьез, то правомерно следующее резюме. При разных моделях поведения участников время жизни системы тоже разное. Чтобы делать какие-то выводы о ее среднем реальном времени жизни, необходимо сначала изучить среднестатистическое, реальное поведение ее участников. Как они себя ведут на самом деле? В реальной жизни?</em><!--]--></p><p><a name="pfmS"></a><!--[--><!--]--><!--[--><em>Какие суммы в среднем вкладывают? На какой срок? Каков процент крупных вкладчиков? Каков мелких? Сколько времени в среднем держат деньги крупные вкладчики? Сколько – мелкие? И т. д. и т. п. (А не брать какую-то произвольную, удобную для вас модель и делать на ее основании какие-то глобальные, далеко идущие и нужные вам выводы).</em><!--]--></p><p><a name="s8y6"></a><!--[--><!--]--><!--[--><em>Исследований таких, естественно, никто никогда не проводил. Да и как их проводить, если пирамиды преданы анафеме? Как были в средние века преданы анафеме астрономия и медицина.</em><!--]--></p><p><a name="ABME"></a><!--[--><!--]--><!--[--><em>Фактически про пирамиды известно только одно. Что это сверхэффективная система по аккумулированию средств. Больше ничего. Так их изучать надо и учиться использовать! А не уподобляться средневековой инквизиции и не жечь их создателей на кострах.</em><!--]--></p><p><a name="d4ho"></a><!--[--><!--]--><!--[--><em>Вы спросите, а как же многочисленные примеры краха пирамид? Достаточно вспомнить Албанию, да и все эти наши Хопры -Тибеты? Набрали денег, наобещали с три короба и разбежались. Миллионы обманутых, исчезнувшие в никуда миллиарды долларов, социальные потрясения... Разве это не доказывает, что пирамиды недолговечны?</em><!--]--></p><p><a name="N6PX"></a><!--[--><!--]--><!--[--><strong><em>А кто создавал эти пирамиды? Случайные, малообразованные люди. Парикмахеры, домохозяйки, мелкие служащие. Какого же иного результата можно было ожидать? Человеку случайно попала в руки волшебная палочка, и он начал ею размахивать, не думая о последствиях. Установите дикарям газовое отопление, и завтра же все племя взлетит на воздух.</em></strong><!--]--></p><p><a name="sFd3"></a><!--[--><!--]--><!--[--><em>Что начали делать эти люди со свалившимися на них с неба деньгами? Они принялись их немедленно и совершенно бездумно транжирить. Строить себе дворцы, виллы, покупать движимость и недвижимость. В лучшем случае, пытались их куда-то пристроить, вложить, вообразив себя новыми финансовыми гениями; в худшем - попросту воровать и «откладывать на черный день». Они прекрасно отдавали себе отчет в собственных «способностях» и понимали, что шальное богатство свалилось на них случайно и что это лишь до поры до времени.</em><!--]--></p><p><a name="0LSs"></a><!--[--><!--]--><!--[--><em>Короче говоря, они сразу же принялись делать именно то, что делать ни в коем случае нельзя. А именно, они стали изымать деньги из системы. Соответственно, при первой же панике (а они время от времени всегда случаются) денег не хватило, и все рухнуло.</em><!--]--></p><p><a name="WFZV"></a><!--[--><!--]--><!--[--><em>Впрочем, я ведь не знаю даже, как они себя в этом случае вообще вели. Я имею в виду - в начале паники. Пытались ли вообще бороться? Возможно, просто сразу же все бросили и пустились в ужасе бежать, куда глаза глядят.</em><!--]--></p><p><a name="MlsK"></a><!--[--><!--]--><!--[--><em>Одним словом, эти примеры абсолютно не убедительны и ровным счетом ничего не доказывают. Разве что сверхэффективность пирамид как системы по привлечению денег, если даже любая домохозяйка может с их помощью легко собрать миллионы.</em><!--]--></p><p><a name="HP94"></a><!--[--><!--]--><!--[--><em>Да, есть примеры строительства финансовых пирамид и банкирами, но опять-таки, зачем они их строили? Чтобы поправить с их помощью свои изрядно пошатнувшиеся дела! Иными словами, только для того, чтобы забирать и забирать оттуда деньги. Естественно, что и тут результат был заранее предсказуем. Примеры, когда человек изначально поставил перед собой задачу построить в чистом виде финансовую пирамиду как систему, денег из нее не забирал, полностью отдавал себе отчет в происходящем и соответствующим образом действовал, мне лично неизвестны. Кроме своего собственного. И могу сказать, что результаты оказались более чем впечатляющими. Впрочем, всему своё время.</em><!--]--></p><p><a name="pXuj"></a><!--[--><!--]--><!--[--><em>Итак, как видите, с вопросом о мнимой недолговечности финансовых пирамид все обстоит далеко не так просто, как на первый взгляд кажется. Я ничего не утверждаю, я всего лишь обращаю внимание на тот очевидный факт, что вопрос этот абсолютно не изучен. Все имеющиеся до сих пор «данные и доказательства» сводятся, по сути, к разного рода безапелляционным утверждениям типа: «Это совершенно очевидно...», «Ясно же, что вечно так продолжаться не может…», «Рано или поздно пирамида обязательно должна рухнуть...».</em><!--]--></p><p><a name="WPCf"></a><!--[--><!--]--><!--[--><em><strong>Между тем, именно все и дело-то тут как раз в нюансах.</strong> В том именно: «рано» или «поздно»? Через месяц или через сто лет? Согласитесь, что разница тут есть. Причем весьма существенная. (Вам же, наверное, не все равно, сколько вам осталось жить? Месяц или сто лет? Так же как и мне не все равно, сколько еще сидеть. Если, конечно, не смотреть на все это с точки зрения вечности, что посоветовал мне однажды следователь). А «рано или поздно» все, конечно, «рухнет». «Вечно», разумеется, ничто «продолжаться не может». Даже мой срок.</em><!--]--></p><p><a name="9C8l"></a><!--[--><!--]--><!--[--><em>Но если вопрос о сроках жизни пирамид сложен и запутан, то вот с вопросом о вредности или полезности пирамид все предельно ясно. Точнее, такого вопроса нет вообще.</em><!--]--></p><p><a name="QkWC"></a><!--[--><!--]--><!--[--><em>Это все равно что спрашивать, вредна или полезна лопата? Смотря что ею делают? Землю копают или по голове бьют?</em><!--]--></p><p><a name="4bbF"></a><!--[--><!--]--><!--[--><em>Пирамида - это просто финансовый инструмент. И вопрос, вреден он или полезен, - не корректен. Все зависит от тех целей, для которых инструмент в данный момент используется.</em><!--]--></p><p><a name="qkp6"></a><!--[--><!--]--><!--[--><em>Вопрос следует ставить иначе. Эффективен этот инструмент или нет? Вот что заслуживает обсуждения.</em><!--]--></p><p><a name="tebI"></a><!--[--><!--]--><!--[--><em>Впрочем, в данном случае и обсуждать-то нечего. Что-что, а уж эффективность-то пирамид сомнений никогда ни у кого не вызывала. Наоборот, именно их невероятная сверхэффективность как раз и служила всегда основой всех проблем, с ними связанных. Слишком уж это мощный и страшный инструмент - финансовая пирамида. И совершенно не изученный.</em><!--]--></p><hr/><div class="callout callout-purple"><!-- --><!--[--><!--]--><!--[--><p><a name="nFc8"></a><!--[--><!--]--><!--[-->Вернуться в <a class="" href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html"><!--[--><strong>раздел "Публицистика Сергея Мавроди"</strong><!--]--></a><!--]--></p><!--]--></div><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="tugs"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="LJoO"></a><!--[--><!--]--><!--[--><a class="" href="Main.html"><!--[--><strong>НА ГЛАВНУЮ</strong><!--]--></a><!--]--></p><!--]--></div><!--]--></article>
+      </article>
+    </main>
+  </div>
+  <script>
+  (function() {
+    var btn = document.getElementById('nav-home-btn');
+    if (!btn) return;
+    var isVis = false;
+    window.addEventListener('scroll', function() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (y > 220) {
+        if (!isVis) { btn.classList.add('visible'); isVis = true; }
+      } else {
+        if (isVis) { btn.classList.remove('visible'); isVis = false; }
+      }
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>
