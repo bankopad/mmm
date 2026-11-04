@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Цель МММ 2.0</title>
+  <style>:root {
+  --bg: #FDFBF7; --surface: #FFFFFF; --text: #2D2B2A; --text-muted: #7A7571;
+  --accent: #D97736; --accent-hover: #BF6226; --border: #EAE6DF;
+  --shadow: rgba(45, 43, 42, 0.05); --nav-bg: rgba(253, 251, 247, 0.95);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1918; --surface: #242220; --text: #EBE9E4; --text-muted: #A39E99;
+    --accent: #E08C53; --accent-hover: #F0A06C; --border: #383533;
+    --shadow: rgba(0, 0, 0, 0.3); --nav-bg: rgba(26, 25, 24, 0.95);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+/* === Шапка с фиксацией === */
+.top-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.nav-logo a {
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Кнопка "На главную" по центру при скролле */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  margin: 0 12px;
+}
+.nav-home-btn {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.nav-home-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.nav-home-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+.nav-links a {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* === Кнопка Регистрации с блеском и сменой текста === */
+.btn-register {
+  position: relative;
+  background: var(--accent);
+  color: #fff !important;
+  height: 40px;
+  min-width: 145px;
+  padding: 0 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(217, 119, 54, 0.25);
+  border: none !important;
+  flex-shrink: 0;
+}
+.btn-register:hover {
+  background: var(--accent-hover);
+}
+
+.btn-register::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  animation: btnShimmer 7s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes btnShimmer {
+  0%, 72% { left: -120%; }
+  82%, 100% { left: 180%; }
+}
+
+.btn-txt-reg, .btn-txt-promo {
+  position: absolute;
+  white-space: nowrap;
+}
+.btn-txt-reg {
+  animation: animReg 7s infinite ease-in-out;
+}
+.btn-txt-promo {
+  animation: animPromo 7s infinite ease-in-out;
+}
+@keyframes animReg {
+  0%, 46% { opacity: 1; transform: translateY(0); }
+  52%, 94% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes animPromo {
+  0%, 46% { opacity: 0; transform: translateY(8px); }
+  52%, 94% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(8px); }
+}
+
+/* === Структура страницы === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  width: 100%;
+}
+.content {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  padding: 50px 60px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px var(--shadow);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+}
+article {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 110px; max-height: calc(100vh - 140px); overflow-y: auto; }
+.toc h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 15px; }
+.toc ul { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--border); }
+.toc a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; padding: 6px 0 6px 14px; }
+.toc a:hover { color: var(--text); border-left: 2px solid var(--accent); margin-left: -2px; }
+h1, h2, h3 { color: var(--text); font-weight: 700; word-break: normal; }
+h1 { font-size: 2.4rem; margin-bottom: 0.8em; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; margin: 1.8em 0 0.8em; }
+h3 { font-size: 1.25rem; margin: 1.5em 0 0.6em; }
+p { margin: 0 0 1.4em; overflow-wrap: break-word; }
+a { color: var(--accent); text-decoration: none; word-break: break-word; }
+figure { margin: 2em 0; text-align: center; max-width: 100%; }
+figure img { max-width: 100%; height: auto; border-radius: 12px; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 2em 0; background: #000; border-radius: 16px; overflow: hidden; max-width: 100%; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+.loader, .preloader { display: none !important; }
+
+/* === Плашки внимания === */
+.callout {
+  margin: 1.8em 0;
+  padding: 1.4em 1.8em;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+.callout > *:first-child { margin-top: 0 !important; }
+.callout > *:last-child { margin-bottom: 0 !important; }
+.callout h1, .callout h2, .callout h3, .callout h4 {
+  margin-top: 0;
+  margin-bottom: 0.4em;
+  line-height: 1.3;
+}
+.callout p { margin: 0; line-height: 1.5; }
+.callout p + p { margin-top: 0.8em; }
+.callout a { border-bottom: none; }
+.callout a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+.callout-blue   { background: rgba(74, 111, 165, 0.08); border-color: rgba(74, 111, 165, 0.25); }
+.callout-amber  { background: rgba(217, 119, 54, 0.08); border-color: rgba(217, 119, 54, 0.25); }
+.callout-purple { background: rgba(155, 107, 138, 0.08); border-color: rgba(155, 107, 138, 0.25); }
+.callout-green  { background: rgba(74, 138, 111, 0.08); border-color: rgba(74, 138, 111, 0.25); }
+
+/* === Мобильная адаптация === */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column-reverse;
+    padding: 15px 12px;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch; /* Предотвращает горизонтальный вылет контента */
+  }
+  .sidebar { width: 100%; max-width: 100%; position: static; }
+  .content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px 14px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  h1 { font-size: clamp(1.45rem, 6.2vw, 1.85rem); line-height: 1.2; }
+
+  .callout {
+    padding: 1.2em 1.2em;
+    margin: 1.4em 0;
+  }
+
+  .nav-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 14px 6px;
+    gap: 8px 0;
+  }
+  .nav-logo { order: 1; }
+  .nav-center { order: 2; margin: 0 4px; }
+  .btn-register {
+    order: 3;
+    height: 36px;
+    min-width: 130px;
+    font-size: 0.82rem;
+    padding: 0 10px;
+  }
+  .nav-home-btn { padding: 4px 10px; font-size: 0.78rem; gap: 4px; }
+  .nav-links {
+    order: 4;
+    width: 100%;
+    margin: 6px 0 0;
+    overflow-x: auto;
+    padding: 0 4px 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 16px;
+    display: flex;
+    justify-content: flex-start;
+    justify-content: safe center; /* Центрирует если помещается, иначе выравнивает по левому краю без обрезки */
+  }
+  .nav-links a {
+    flex-shrink: 0;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+}</style>
+</head>
+<body>
+  
+    <header class="top-nav">
+      <div class="nav-container">
+        <div class="nav-logo"><a href="index.html">МММ 2.0</a></div>
+        <div class="nav-center">
+          <a href="index.html" class="nav-home-btn" id="nav-home-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>На главную</span>
+          </a>
+        </div>
+        <nav class="nav-links"><a href="PREDUPREZHDENIE.html">Предупреждение</a><a href="PRAVILA.html">Правила</a><a href="idea.html">Идеология</a><a href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html">Публицистика</a></nav>
+        <a href="https://t.me/MavroRebot?start=gitstatic" class="btn-register" target="_blank">
+          <span class="btn-txt-reg">Регистрация</span>
+          <span class="btn-txt-promo">Удвоение 1000₽</span>
+        </a>
+      </div>
+    </header>
+  <div class="container">
+    
+    <main class="content">
+      <article>
+        <h1>Цель МММ 2.0</h1>
+        <article class="article__content text" itemprop="articleBody"><!--[--><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="g3hp"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="nqVH"></a><!--[--><!--]--><!--[--><strong><a class="" href="Main.html"><!--[-->НА ГЛАВНУЮ<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="XjlD"></a><!--[--><!--]--><!--[--><strong>Вернуться в</strong> <a class="" href="MMMisAndMission.html"><!--[--><strong>раздел "Суть и цель МММ 2.0"</strong><!--]--></a><!--]--></p><!--]--></div><figure class="m_column" itemscope="" itemtype="http://schema.org/ImageObject"><a name="052E"></a><!--[--><!--]--><!-- --><!--[--><img src="0271c17a-5ec4-433a-8bf2-1370f2eac43c.png"/><!--]--><!--[--><!--[--><!-- --><!--]--><!--]--></figure><p><a name="WVXO"></a><!--[--><!--]--><!--[-->Мы живем в мире в котором постоянно приходится тратить деньги: как только мы их получаем, мы их тут же тратим! И, как правило, траты с каждым разом лишь увеличиваются:<strong> деньги всё время кончаются, нам их не хватает.</strong> Именно поэтому человек привык относиться к деньгам как к чему-то конечному.<!--]--></p><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="lYs1"></a><!--[--><!--]--><!--[-->Хотя в действительности это совсем не так.<!--]--></p><!--]--></div><p><a name="7jAE"></a><!--[--><!--]--><!--[-->Приведем простые примеры, которые показывают, как работают деньги и что нужно делать, чтобы они не кончались! Звучит фантастически?! Никакой фантастики.<!--]--></p><p><a name="P6wt"></a><!--[--><!--]--><!--[-->Представим простую экономическую модель, в которой существует всего четыре человека: Вася, Петя, Катя и Юля.<!--]--></p><p><a name="Hpjq"></a><!--[--><!--]--><!--[-->Предположим, что Вася покупает у Пети овощи и отдает ему за них 1000 рублей. <br/>На следующий день Пете понадобилась рыба и он решил сходить к Кате, чтобы купить у нее рыбу, на которую он потратил всё ту же 1000 рублей. <br/>Катя на следующий день пошла к Юле делать маникюр и отдала ей за работу 1000 рублей. <br/>Юля на следующий день пошла к Васе, который торгует мясом, и купила у него мяса на 1000 рублей.<!--]--></p><p><a name="AcFJ"></a><!--[--><!--]--><!--[-->Таким образом,<strong> всего за несколько дней</strong> одна и та же 1000 рублей прошла через несколько сделок и вернулась обратно к тому человеку, который, казалось бы, потратил эти деньги.<!--]--></p><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="4QI8"></a><!--[--><!--]--><!--[-->Этот пример наглядно показывает, что деньги никуда не исчезают и не кончаются, когда мы их тратим, – они лишь переходят от одного человека к другому, работая на них в разное время. И в итоге даже могут вернуться обратно к тому человеку, который их изначально потратил.<!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="UXaS"></a><!--[--><!--]--><!--[--><strong>То есть в модели есть всего одна тысяча рублей, а услуг и товаров куплено на 4000 рублей – в 4 раза больше! Самое интересное, что если эта 1000 рублей и дальше будет ходить по рукам участников экономики, она может создать ценности хоть на миллион рублей. Да хоть на миллиард! Просто каждый участник</strong> <strong>экономики будет пользоваться этой тысячей в разное время. </strong><!--]--></p><!--]--></div><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="t3yS"></a><!--[--><!--]--><!--[--><strong>Это, к слову, откуда в нашей динамичной системе берутся такие огромные</strong> <strong>проценты при, казалось бы, ограниченной денежной массе: просто одни и те же деньги работают на разных людей в разное время. Это называется коэффициент одновременности. </strong><!--]--></p><!--]--></div><div class="callout callout-green"><!-- --><!--[--><!--]--><!--[--><p><a name="ftgY"></a><!--[--><!--]--><!--[--><strong>Кстати, благодаря именно этому коэффициенту банки совершенно спокойно работают на кассовом разрыве: потому что все люди являются клиентами банков! И сколько бы денег мы из банков ни забирали, – они тут же возвращаются обратно в банк. Ведь мы тратим эти деньги – передаем их в обмен на товар или услугу другому человеку. Который снова несет их в банк. </strong><br/><strong>Так почему все люди не могут стать участниками нашей системы взаимопомощи? Народного банка, в котором деньги работают на самих людей? Конечно, могут! Они и станут. Это лишь вопрос времени и прикладываемых усилий.</strong> <strong>Это и есть наша цель</strong> <strong>– сделать всех участниками нашей системы и таким образом закольцевать её.</strong><!--]--></p><!--]--></div><p><a name="tnkJ"></a><!--[--><!--]--><!--[-->Именно в этом и заключается суть глобальной Системы Взаимопомощи МММ 2.0! У каждого человека всегда есть свободные деньги – накопления и сбережения, – которые в настоящий момент ему не нужны. При прочих равных сейчас люди несут эти деньги в банк, который выдаёт их в кредит другим людям. И всё это воспринимается как норма, в порядке вещей. Хотя никакой нормы в этом нет!<!--]--></p><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="dMBF"></a><!--[--><!--]--><!--[-->В нашей Системе всё те же свободные деньги люди передают другим точно таким же людям, переводя их напрямую с карты на карту, с криптокошелька на криптокошелек. Получая при этом предположительно от 20% в месяц!<!--]--></p><!--]--></div><p><a name="v2JQ"></a><!--[--><!--]--><!--[--><strong>Как это работает?</strong> Давайте снова разберем на простом примере.<!--]--></p><p><a name="GFxF"></a><!--[--><!--]--><!--[-->Предположим, участник МММ 2.0 по имени Вася вступил в Систему и помог другим людям на 100 тысяч рублей. Через месяц он получил помощь от других участников в большем объеме – 120 тысяч рублей. Достаточно неплохая прибыль <strong>за месяц(!)</strong>, согласитесь!<!--]--></p><p><a name="KYWD"></a><!--[--><!--]--><!--[-->А теперь простой и понятный экономический процесс. Эти деньги, полученные из системы от других участников, Вася потратит на ремонт своего автомобиля. Другими словами, он передаст эти деньги другому человеку – мастеру СТО Пете, который отремонтирует его машину. Но Петя, в свою очередь, возможно, уже слышал про глобальную систему взаимопомощи МММ 2.0<!--]--></p><p><a name="xoSp"></a><!--[--><!--]--><!--[-->А теперь представим, что мастер Петя тоже захотел вступить в нашу систему и оказал помощь. И когда Петя сам будет запрашивать помощь через месяц, не исключено, что Пете будет помогать тот же Вася, который ремонтировал у него свою машину. Ведь Вася уже давно участвует в Системе МММ 2.0 и постоянно оказывает и получает помощь!<!--]--></p><p><a name="aRtT"></a><!--[--><!--]--><!--[-->Иными словами, этот процесс динамичный: непрерывный и замкнутый! Ведь старые участники, получающие деньги с процентами, снова оказывают помощь. И в это же время к Системе присоединяются новые люди!<!--]--></p><div class="callout callout-purple"><!-- --><!--[--><!--]--><!--[--><p><a name="NSCk"></a><!--[--><!--]--><!--[-->Таким образом, <strong>когда критическая масса людей вступит в нашу систему, – система замкнется! Это и есть наша цель</strong>. Тогда деньги просто перестанут выходить из системы, переходя из рук в руки: от участника напрямую к другому частнику, создавая для каждого ценность в разное время. С этого момента наши свободные деньги начинают работать на нас! А не на банкиров.<!--]--></p><!--]--></div><p><a name="PbI9"></a><!--[--><!--]--><!--[-->Думаю, суть вы уловили. МММ 2.0 – это абстрактная общая тумбочка, куда каждый складывает свои свободные деньги и берет, когда ему нужно! Таким образом достигать финансовых целей становится намного проще, ведь мы теперь не одни! Мы объединились и генерируем деньги доверием!<!--]--></p><p><a name="DPuy"></a><!--[--><!--]--><!--[-->Самый простой способ на практике понять, как работает наша система, – это акция <strong><a href="https://www.youtube.com/shorts/5r88rs128eI"><!--[-->УДВОЕНИЯ<!--]--></a> </strong>для новичков. Всего за сутки Вы убедитесь, что всё работает, и распрощаетесь со своими стереотипами. <!--]--></p><p><a name="fFQW"></a><!--[--><!--]--><!--[-->Добро пожаловать!<!--]--></p><figure class="m_column"><a name="hAIw"></a><!--[--><!--]--><!--[--><div class="video-container"><iframe allow="accelerometer; autoplay; encrypted-media; clipboard-write; gyroscope; picture-in-picture; web-share; camera" allowfullscreen="" class="embed-youtube" frameborder="0" id="hAIw" scrolling="no" src="https://www.youtube.com/embed/5r88rs128eI?autoplay=0&amp;loop=0&amp;mute=0"></iframe></div><!--]--><!-- --><!--[--><!--[--><!-- --><!--]--><!--]--></figure><hr/><div class="callout callout-neutral"><!-- --><!--[--><!--]--><!--[--><p><a name="0FGz"></a><!--[--><!--]--><!--[--><strong>Вернуться в</strong> <a class="" href="MMMisAndMission.html"><!--[--><strong>раздел "Суть и цель МММ 2.0"</strong><!--]--></a><!--]--></p><!--]--></div><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="2LVz"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="208B"></a><!--[--><!--]--><!--[--><strong><a class="" href="Main.html"><!--[-->НА ГЛАВНУЮ<!--]--></a></strong><!--]--></p><!--]--></div><!--]--></article>
+      </article>
+    </main>
+  </div>
+  <script>
+  (function() {
+    var btn = document.getElementById('nav-home-btn');
+    if (!btn) return;
+    var isVis = false;
+    window.addEventListener('scroll', function() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (y > 220) {
+        if (!isVis) { btn.classList.add('visible'); isVis = true; }
+      } else {
+        if (isVis) { btn.classList.remove('visible'); isVis = false; }
+      }
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>

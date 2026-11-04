@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Комментарий Сергея Мавроди к статье Кудрина в "The new times"</title>
+  <style>:root {
+  --bg: #FDFBF7; --surface: #FFFFFF; --text: #2D2B2A; --text-muted: #7A7571;
+  --accent: #D97736; --accent-hover: #BF6226; --border: #EAE6DF;
+  --shadow: rgba(45, 43, 42, 0.05); --nav-bg: rgba(253, 251, 247, 0.95);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1918; --surface: #242220; --text: #EBE9E4; --text-muted: #A39E99;
+    --accent: #E08C53; --accent-hover: #F0A06C; --border: #383533;
+    --shadow: rgba(0, 0, 0, 0.3); --nav-bg: rgba(26, 25, 24, 0.95);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+/* === Шапка с фиксацией === */
+.top-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.nav-logo a {
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Кнопка "На главную" по центру при скролле */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  margin: 0 12px;
+}
+.nav-home-btn {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.nav-home-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.nav-home-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+.nav-links a {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* === Кнопка Регистрации с блеском и сменой текста === */
+.btn-register {
+  position: relative;
+  background: var(--accent);
+  color: #fff !important;
+  height: 40px;
+  min-width: 145px;
+  padding: 0 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(217, 119, 54, 0.25);
+  border: none !important;
+  flex-shrink: 0;
+}
+.btn-register:hover {
+  background: var(--accent-hover);
+}
+
+.btn-register::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  animation: btnShimmer 7s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes btnShimmer {
+  0%, 72% { left: -120%; }
+  82%, 100% { left: 180%; }
+}
+
+.btn-txt-reg, .btn-txt-promo {
+  position: absolute;
+  white-space: nowrap;
+}
+.btn-txt-reg {
+  animation: animReg 7s infinite ease-in-out;
+}
+.btn-txt-promo {
+  animation: animPromo 7s infinite ease-in-out;
+}
+@keyframes animReg {
+  0%, 46% { opacity: 1; transform: translateY(0); }
+  52%, 94% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes animPromo {
+  0%, 46% { opacity: 0; transform: translateY(8px); }
+  52%, 94% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(8px); }
+}
+
+/* === Структура страницы === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  width: 100%;
+}
+.content {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  padding: 50px 60px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px var(--shadow);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+}
+article {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 110px; max-height: calc(100vh - 140px); overflow-y: auto; }
+.toc h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 15px; }
+.toc ul { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--border); }
+.toc a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; padding: 6px 0 6px 14px; }
+.toc a:hover { color: var(--text); border-left: 2px solid var(--accent); margin-left: -2px; }
+h1, h2, h3 { color: var(--text); font-weight: 700; word-break: normal; }
+h1 { font-size: 2.4rem; margin-bottom: 0.8em; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; margin: 1.8em 0 0.8em; }
+h3 { font-size: 1.25rem; margin: 1.5em 0 0.6em; }
+p { margin: 0 0 1.4em; overflow-wrap: break-word; }
+a { color: var(--accent); text-decoration: none; word-break: break-word; }
+figure { margin: 2em 0; text-align: center; max-width: 100%; }
+figure img { max-width: 100%; height: auto; border-radius: 12px; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 2em 0; background: #000; border-radius: 16px; overflow: hidden; max-width: 100%; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+.loader, .preloader { display: none !important; }
+
+/* === Плашки внимания === */
+.callout {
+  margin: 1.8em 0;
+  padding: 1.4em 1.8em;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+.callout > *:first-child { margin-top: 0 !important; }
+.callout > *:last-child { margin-bottom: 0 !important; }
+.callout h1, .callout h2, .callout h3, .callout h4 {
+  margin-top: 0;
+  margin-bottom: 0.4em;
+  line-height: 1.3;
+}
+.callout p { margin: 0; line-height: 1.5; }
+.callout p + p { margin-top: 0.8em; }
+.callout a { border-bottom: none; }
+.callout a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+.callout-blue   { background: rgba(74, 111, 165, 0.08); border-color: rgba(74, 111, 165, 0.25); }
+.callout-amber  { background: rgba(217, 119, 54, 0.08); border-color: rgba(217, 119, 54, 0.25); }
+.callout-purple { background: rgba(155, 107, 138, 0.08); border-color: rgba(155, 107, 138, 0.25); }
+.callout-green  { background: rgba(74, 138, 111, 0.08); border-color: rgba(74, 138, 111, 0.25); }
+
+/* === Мобильная адаптация === */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column-reverse;
+    padding: 15px 12px;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch; /* Предотвращает горизонтальный вылет контента */
+  }
+  .sidebar { width: 100%; max-width: 100%; position: static; }
+  .content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px 14px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  h1 { font-size: clamp(1.45rem, 6.2vw, 1.85rem); line-height: 1.2; }
+
+  .callout {
+    padding: 1.2em 1.2em;
+    margin: 1.4em 0;
+  }
+
+  .nav-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 14px 6px;
+    gap: 8px 0;
+  }
+  .nav-logo { order: 1; }
+  .nav-center { order: 2; margin: 0 4px; }
+  .btn-register {
+    order: 3;
+    height: 36px;
+    min-width: 130px;
+    font-size: 0.82rem;
+    padding: 0 10px;
+  }
+  .nav-home-btn { padding: 4px 10px; font-size: 0.78rem; gap: 4px; }
+  .nav-links {
+    order: 4;
+    width: 100%;
+    margin: 6px 0 0;
+    overflow-x: auto;
+    padding: 0 4px 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 16px;
+    display: flex;
+    justify-content: flex-start;
+    justify-content: safe center; /* Центрирует если помещается, иначе выравнивает по левому краю без обрезки */
+  }
+  .nav-links a {
+    flex-shrink: 0;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+}</style>
+</head>
+<body>
+  
+    <header class="top-nav">
+      <div class="nav-container">
+        <div class="nav-logo"><a href="index.html">МММ 2.0</a></div>
+        <div class="nav-center">
+          <a href="index.html" class="nav-home-btn" id="nav-home-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>На главную</span>
+          </a>
+        </div>
+        <nav class="nav-links"><a href="PREDUPREZHDENIE.html">Предупреждение</a><a href="PRAVILA.html">Правила</a><a href="idea.html">Идеология</a><a href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html">Публицистика</a></nav>
+        <a href="https://t.me/MavroRebot?start=gitstatic" class="btn-register" target="_blank">
+          <span class="btn-txt-reg">Регистрация</span>
+          <span class="btn-txt-promo">Удвоение 1000₽</span>
+        </a>
+      </div>
+    </header>
+  <div class="container">
+    
+    <main class="content">
+      <article>
+        <h1>Комментарий Сергея Мавроди к статье Кудрина в "The new times"</h1>
+        <article class="article__content text" itemprop="articleBody"><!--[--><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="Z2eA"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="VdUs"></a><!--[--><!--]--><!--[--><a class="" href="Main.html"><!--[--><strong>НА ГЛАВНУЮ</strong><!--]--></a><!--]--></p><!--]--></div><div class="callout callout-purple"><!-- --><!--[--><!--]--><!--[--><p><a name="fkCd"></a><!--[--><!--]--><!--[-->Вернуться в <a class="" href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html"><!--[--><strong>раздел "Публицистика Сергея Мавроди"</strong><!--]--></a><!--]--></p><!--]--></div><figure class="m_column" itemscope="" itemtype="http://schema.org/ImageObject"><a name="YbrF"></a><!--[--><!--]--><!-- --><!--[--><img src="41227952-4a3e-4ba0-809a-3ebfaf43ec51.jpeg"/><!--]--><!--[--><!--[--><figcaption itemprop="description"><!-- --><!--[--><!--]--><!--[-->Живая структурированная сеть, основанная на доверии и взаимопомощи; абсолютно децентрализованная автоматизированная система, в которой телеграм-бот стыкует участников напрямую друг с другом; отсутствие единых баз данных, серверов и центров управления. Тотальная распылённость!<!--]--></figcaption><!--]--><!--]--></figure><hr/><blockquote><a name="2s8d"></a><!--[--><!--]--><!--[-->«Почему? Ведь Америка сама печатает те самые доллары, которые она задолжала другим странам…<!--]--></blockquote><p><a name="30vV"></a><!--[--><!--]--><!--[--><em>Что значит печатает? Эти деньги ведь не берутся из воздуха. ФРС, управляя ликвидностью в мире, выдает доллары в виде кредитов американским банкам (только они зарегистрированы в ФРС), те, в свою очередь, кредитуют другие банки и предприятия, и эти доллары как бы разливаются ровным слоем по всей мировой экономике. Даже российско-белорусские расчеты за нефтяные поставки осуществляются в долларах. По мере возвращения кредитов происходит естественное сжатие этой денежной массы — при условии, что ФРС не продолжает рефинансирование. Но если американский бюджет каждый год занимает больше триллиона долларов (то есть такое количество американской валюты печатается дополнительно), то вместо сжатия происходит инерционное наращивание денежной массы. И это в ближайшие годы может снизить доверие к доллару, к его способности быть мировой резервной валютой и обеспечить необходимым объемом ресурсов потребности мирового рынка. Соответственно, доллар может заметно упасть по отношению к другим валютам. Но это произойдет не сейчас…»</em><!--]--></p><hr/><figure class="m_column" itemscope="" itemtype="http://schema.org/ImageObject"><a name="zapZ"></a><!--[--><!--]--><!-- --><!--[--><img src="https://telegra.ph/file/bd85d678760573de07371.jpg"/><!--]--><!--[--><!--[--><figcaption itemprop="description"><!-- --><!--[--><!--]--><!--[-->билеты МММ образца 1994 года<!--]--></figcaption><!--]--><!--]--></figure><hr/><h4><a name="Сергей-Мавроди:"></a><!--[--><!--]--><!--[-->Сергей Мавроди:<!--]--></h4><p><a name="IlY3"></a><!--[--><!--]--><!--[--><em>Ах, как всё умно! И убедительно. «Сжатие!.. расширение!..» «Денежная масса!..» Читаешь и — проникаешься! Сердце, прям, радуется. Какие у нас министры, блин, компетентные. (Пусть и бывшие. :-))</em><!--]--></p><p><a name="4rpK"></a><!--[--><!--]--><!--[--><em>Вот так вам морочат голову. На протяжении веков. Точнее, всей человеческой истории. По сути. А вы — верите.</em><!--]--></p><p><a name="cpVS"></a><!--[--><!--]--><!--[--><em>А ФРС-то откуда их берёт?! Доллары-то эти? Не из воздуха разве? И откуда она вообще может знать, объясните мне, сколько именно их надо напечатать? «Разлить ровным слоем»? Чтобы правильно «ликвидностью управлять» и выпустить ровно столько денег, сколько в мире за этот срок товаров и услуг новых появилось? (А ведь именно так по идее должно быть. И никак иначе.)</em><!--]--></p><p><a name="OmnN"></a><!--[--><!--]--><!--[--><em>Да ниоткуда! От вольного она печатает. Благо, своя рука владыка. Вот и всё. Вот и все эти с понтом «сжатия-расширения». Все эти «не из воздуха».</em><!--]--></p><p><a name="4DUu"></a><!--[--><!--]--><!--[--><em>Вот дадут Вам завтра право доллары рисовать, и Вы тоже ведь про сжатия-расширения наираспрекраснейшим и наирасчудеснейшим образом всем всё разобъясните. Разве нет? :-)) <strong>Только вот в результате всех этих расширений Вы лично станете (почему-то! :-)) как сыр в масле кататься, а все прочие… А им одни только сжатия достанутся.</strong> Отчего-то. Ну, получится так! Чисто случайно. Сказку детскую про вершки и корешки помните?.. Вот-вот! :-))</em><!--]--></p><p><a name="agP9"></a><!--[--><!--]--><!--[--><em>И ответьте мне, г-н Кудрин, на такой ещё вопросец. А то я чего-то не догоняю? (Ну, я же, слава богу, не экономист. Мне простительно. :-))</em><!--]--></p><p><a name="bqax"></a><!--[--><!--]--><!--[--><em>Вот создала ФРС («не из воздуха» :-)), скажем, триллион долларов. Или сколько там? Ну, не суть. Пусть триллион. Да. И дала этот триллион банкам. А те, в свою очередь, естественно, тут же быстренько раздали его в кредит. То бишь — под проценты. Так? <strong>Т.е. вернуть-то им должны уже триллион плюс проценты?</strong> Правильно? Но ведь этих процентов нет в природе? Вообще! Денег-то ведь всего только триллион напечатан! Так как же их тогда можно выплатить, эти проценты? А? Никак, что ль, получается?!</em><!--]--></p><p><a name="NzVb"></a><!--[--><!--]--><!--[--><em><strong>Т.е. выбраться из финансовой кабалы тем, кто взял кредит у ФРС (через банки), невозможно в принципе!</strong> Они обречены на веки вечные быть отныне её должниками!</em><!--]--></p><p><a name="nLfy"></a><!--[--><!--]--><!--[--><em>Вот что такое мировая финансовая система. И вот почему она должна быть уничтожена. И она будет уничтожена! Мы Можем Многое! Аминь.</em><!--]--></p><hr/><div class="callout callout-purple"><!-- --><!--[--><!--]--><!--[--><p><a name="Z2eA"></a><!--[--><!--]--><!--[-->Вернуться в <a class="" href="Publicistika-Sergeya-Mavrodi-2008-2018-gody.html"><!--[--><strong>раздел "Публицистика Сергея Мавроди"</strong><!--]--></a><!--]--></p><!--]--></div><div class="callout callout-blue"><!-- --><!--[--><!--]--><!--[--><p><a name="1MWi"></a><!--[--><!--]--><!--[-->Регистрация в <strong><a href="https://t.me/MavroRebot?start=gitstatic"><!--[-->телеграм-боте<!--]--></a></strong><!--]--></p><!--]--></div><div class="callout callout-amber"><!-- --><!--[--><!--]--><!--[--><p><a name="4wGK"></a><!--[--><!--]--><!--[--><a class="" href="Main.html"><!--[--><strong>НА ГЛАВНУЮ</strong><!--]--></a><!--]--></p><!--]--></div><!--]--></article>
+      </article>
+    </main>
+  </div>
+  <script>
+  (function() {
+    var btn = document.getElementById('nav-home-btn');
+    if (!btn) return;
+    var isVis = false;
+    window.addEventListener('scroll', function() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (y > 220) {
+        if (!isVis) { btn.classList.add('visible'); isVis = true; }
+      } else {
+        if (isVis) { btn.classList.remove('visible'); isVis = false; }
+      }
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>
